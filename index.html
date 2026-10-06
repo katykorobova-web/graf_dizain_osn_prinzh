@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRAP Principles Dashboard - Композиция и визуальная иерархия</title>
+<style>
+/* === CSS VARIABLES === */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #dbeafe;
+  --secondary: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --bg: #ffffff;
+  --bg-secondary: #f8fafc;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-secondary: #64748b;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+  --radius: 8px;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+}
+
+/* === RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--bg-secondary);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* === LAYOUT === */
+#app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-sm);
+}
+
+.container {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* === TYPOGRAPHY === */
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--text);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--text);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--text);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-secondary);
+}
+
+/* === BUTTONS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* === CARDS === */
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  transition: all 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.metric-card {
+  text-align: center;
+}
+
+.metric-value {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--primary);
+  margin: var(--spacing-xs) 0;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* === GRID === */
+.grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+/* === CHARTS === */
+.chart-container {
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+}
+
+.bar {
+  flex: 1;
+  background: var(--primary);
+  border-radius: var(--radius) var(--radius) 0 0;
+  position: relative;
+  transition: all 0.3s;
+  min-width: 40px;
+}
+
+.bar:hover {
+  background: var(--primary-dark);
+}
+
+.bar-label {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.bar-value {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: var(--spacing-xs) 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+
+/* === FILTERS === */
+.filter-group {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 500;
+  transition: all 0.2s;
+  min-height: 44px;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary);
+}
+
+.filter-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* === FORMS === */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="email"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  min-height: 44px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.error-message {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* === BADGES === */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-easy {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-hard {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* === SCREENS === */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === NAVIGATION === */
+.nav {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  min-height: 44px;
+}
+
+.nav-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.nav-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* === PRACTICE TASKS === */
+.task-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  transition: all 0.2s;
+}
+
+.task-card:hover {
+  border-color: var(--primary);
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.task-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.status-indicator.completed {
+  background: var(--success);
+}
+
+/* === REFLECTION === */
+.reflection-item {
+  background: var(--bg-secondary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* === EXPORT === */
+.export-section {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* === EMPTY STATE === */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* === THEORY SECTION === */
+.theory-block {
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--primary);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  border-radius: var(--radius);
+}
+
+.theory-block h4 {
+  color: var(--primary);
+  margin-bottom: var(--spacing-xs);
+  font-size: 1.1rem;
+}
+
+.theory-block ul {
+  margin-left: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+.theory-block li {
+  margin-bottom: var(--spacing-xs);
+  color: var(--text);
+}
+
+.principle-example {
+  background: var(--primary-light);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  margin: var(--spacing-sm) 0;
+  font-style: italic;
+}
+
+.interactive-demo {
+  border: 2px dashed var(--primary);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  margin: var(--spacing-md) 0;
+  background: var(--bg);
+}
+
+.demo-controls {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-element {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  margin: var(--spacing-xs);
+  transition: all 0.3s;
+}
+
+/* === ACCORDION === */
+.accordion {
+  margin: var(--spacing-md) 0;
+}
+
+.accordion-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: var(--spacing-xs);
+  overflow: hidden;
+}
+
+.accordion-header {
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.accordion-header:hover {
+  background: var(--border);
+}
+
+.accordion-header.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.accordion-content {
+  padding: var(--spacing-sm);
+  display: none;
+}
+
+.accordion-content.active {
+  display: block;
+}
+
+/* === TIPS === */
+.tip {
+  background: #fef3c7;
+  border-left: 4px solid var(--warning);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  margin: var(--spacing-sm) 0;
+}
+
+.tip::before {
+  content: "💡 ";
+  font-weight: bold;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .nav {
+    flex-direction: column;
+  }
+  
+  .nav-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  #app {
+    padding: var(--spacing-xs);
+  }
+  
+  .container {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* === UTILITY === */
+.text-center {
+  text-align: center;
+}
+
+.mb-sm {
+  margin-bottom: var(--spacing-sm);
+}
+
+.mb-md {
+  margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+  margin-bottom: var(--spacing-lg);
+}
+
+.mt-sm {
+  margin-top: var(--spacing-sm);
+}
+
+.mt-md {
+  margin-top: var(--spacing-md);
+}
+
+.hidden {
+  display: none !important;
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// === CONSTANTS ===
+const CRAP_PRINCIPLES = {
+  contrast: {
+    title: 'Contrast (Контраст)',
+    icon: '🎨',
+    description: 'Элементы должны быть либо одинаковыми, либо сильно различаться. Контраст привлекает внимание и создает визуальную иерархию.',
+    detailedDescription: 'Контраст – один из самых эффективных принципов дизайна. Контраст должен быть сильным, только тогда он работает! Контраст порождает различия между двумя элементами. Это самое сильное визуальное средство, которое заставляет читателя посмотреть на страницу.',
+    keyPoints: [
+      'Не располагать рядом друг с другом похожие элементы',
+      'Контраст должен быть сильным, только тогда он работает',
+      'Контраст порождает различия между двумя элементами'
+    ],
+    examples: [
+      'Крупному шрифту – мелкий',
+      'Тонкой линии – толстую',
+      'Холодному цвету – теплый',
+      'Горизонтальному элементу – вертикальный',
+      'Большому интерлиньяжу – маленький'
+    ],
+    metrics: { importance: 95, usage: 87, effectiveness: 92 },
+    tips: [
+      'Контраст между шрифтами и линейкой должен быть убедительным',
+      'Сильный контраст шрифтов делает работу более динамичной и привлекательной',
+      'Вся композиция становится более выразительной'
+    ]
+  },
+  repetition: {
+    title: 'Repetition (Повторение)',
+    icon: '🔁',
+    description: 'Повторение визуальных элементов создает единство и согласованность дизайна. Повторяющиеся элементы связывают части дизайна.',
+    detailedDescription: 'Некоторые компоненты дизайна должны повторяться по всей публикации. Повтор – это воплощение согласованности и постоянства. Благодаря повтору ваши работы выглядят более профессионально и приобретают вес!',
+    keyPoints: [
+      'Визуальные элементы дизайна должны повторяться',
+      'Повтор усиливает стилистическую целостность работы',
+      'Цель повтора – объединить всю работу и сделать её визуально более интересной'
+    ],
+    examples: [
+      'Линейки',
+      'Маркеры списков',
+      'Шрифтовое оформление',
+      'Цвет',
+      'Пространственные взаимосвязи',
+      'Жирное и светлое начертание',
+      'Квадратные маркеры',
+      'Отступы и интервалы',
+      'Выравнивание'
+    ],
+    metrics: { importance: 88, usage: 79, effectiveness: 85 },
+    tips: [
+      'Можно использовать графический элемент и поворачивать его в разные стороны',
+      'Избегайте избыточного повтора, который действует на нервы и подавляет',
+      'Повтор делает работы профессиональными и придает им вес'
+    ]
+  },
+  alignment: {
+    title: 'Alignment (Выравнивание)',
+    icon: '📐',
+    description: 'Ничто не должно размещаться произвольно. Каждый элемент должен иметь визуальную связь с другим элементом на странице.',
+    detailedDescription: 'Ни один элемент страницы не должен располагаться случайным образом, потому что нашлось ему место. Выровненные элементы выглядят как единое целое. Главная цель выравнивания – сделать страницу гармоничной.',
+    keyPoints: [
+      'Ни один элемент не должен занимать случайное место',
+      'Каждый элемент нуждается в визуальной связи с соседним',
+      'Страница будет выглядеть свежо и утонченно',
+      'Пока не набрались опыта, используйте не более 1 выравнивания на 1 странице'
+    ],
+    examples: [
+      'Если все элементы сдвинуть вправо и выровнять одинаково, визитка приобретет структуру',
+      'У текстовых фрагментов появится граница',
+      'Текст будет выглядеть более аккуратнее и выразительнее'
+    ],
+    metrics: { importance: 92, usage: 84, effectiveness: 90 },
+    tips: [
+      'Никогда не выравнивайте заголовки по центру, если к ним прилегают абзацы с выключкой влево',
+      'Если к тексту применяется выключка влево, то и к заголовкам ее примените',
+      'Можно выравнивание нарушить осознанно, но делайте это эффектно, дерзко, демонстративно!',
+      'Избавляйтесь от привычки – выравнивание по центру'
+    ]
+  },
+  proximity: {
+    title: 'Proximity (Близость)',
+    icon: '🧲',
+    description: 'Связанные элементы должны быть сгруппированы вместе. Физическая близость подразумевает связь.',
+    detailedDescription: 'Связанные элементы нужно группировать. Образуется один визуальный элемент. Элементы, не имеющие отношение друг к другу не должны находиться рядом.',
+    keyPoints: [
+      'Связанные элементы необходимо объединить в группы',
+      'Замечайте, откуда вы начинаете читать и как движется ваш взгляд',
+      'Куда вы смотрите после того, как закончили чтение',
+      'В работе должна прослеживаться логическая завершенность',
+      'Не ставьте на странице слишком много элементов (не более 5)',
+      'Старайтесь ставить между элементами разные просветы'
+    ],
+    examples: [
+      'Объединение элементов в группы – способ графического выражения информации',
+      'Группировка делает информацию более понятной',
+      'Замена заглавных букв и заострение углов делает работу более серьезной'
+    ],
+    metrics: { importance: 90, usage: 82, effectiveness: 88 },
+    tips: [
+      'Связанные элементы необходимо объединить в группы',
+      'Элементы, не имеющие отношения друг к другу, не должны находиться рядом',
+      'Группировка помогает читателю понять структуру информации'
+    ]
+  }
+};
+
+const PRACTICAL_TASKS = {
+  easy: {
+    name: 'Базовый',
+    color: 'easy',
+    title: '«Следуй правилу»',
+    description: 'Создай афишу школьной выставки из готовых элементов. Соблюдай все 4 правила CRAP.',
+    features: [
+      'Используй шаблон сетки (линии выравнивания уже намечены на бумаге)',
+      'Готовая сетка на листе А4',
+      'Элементы подобраны в одной цветовой гамме',
+      'Меньше вариантов выбора'
+    ],
+    hint: 'Начни с самого крупного элемента — это главный объект афиши',
+    tasks: [
+      {
+        id: 'easy1',
+        title: 'Определение контраста',
+        question: 'Какой элемент дизайна создает наибольший контраст?',
+        options: ['Два одинаковых круга', 'Большой красный круг и маленький синий квадрат', 'Два синих квадрата', 'Три круга разного размера'],
+        correct: 1
+      },
+      {
+        id: 'easy2',
+        title: 'Принцип близости',
+        question: 'Как лучше сгруппировать связанные элементы?',
+        options: ['Разместить их по всей странице', 'Разместить их близко друг к другу', 'Разместить их в случайном порядке', 'Использовать разные цвета'],
+        correct: 1
+      },
+      {
+        id: 'easy3',
+        title: 'Выравнивание',
+        question: 'Что создает более профессиональный вид?',
+        options: ['Случайное размещение элементов', 'Выравнивание по сетке', 'Разные размеры шрифтов', 'Много разных цветов'],
+        correct: 1
+      }
+    ]
+  },
+  medium: {
+    name: 'Средний',
+    color: 'medium',
+    title: '«Управляй вниманием»',
+    description: 'Создай афишу школьного мероприятия на выбор. Управляй взглядом зрителя: сначала — название, потом — дата, потом — место.',
+    features: [
+      'Используй CRAP сознательно',
+      'Выбери 2 акцентных цвета и повторяй их',
+      'Сетки нет',
+      'Больше элементов на выбор',
+      'Больше свободы'
+    ],
+    tasks: [
+      {
+        id: 'medium1',
+        title: 'Анализ макета',
+        question: 'В макете все элементы разного размера и цвета. Какой принцип CRAP нарушен?',
+        options: ['Contrast', 'Repetition', 'Alignment', 'Proximity'],
+        correct: 1
+      },
+      {
+        id: 'medium2',
+        title: 'Исправление дизайна',
+        question: 'Текст и кнопка находятся далеко друг от друга, но связаны функционально. Что нужно сделать?',
+        options: ['Увеличить контраст', 'Добавить повторение', 'Улучшить выравнивание', 'Уменьшить расстояние (Proximity)'],
+        correct: 3
+      },
+      {
+        id: 'medium3',
+        title: 'Визуальная иерархия',
+        question: 'Какой прием создает лучшую визуальную иерархию?',
+        options: ['Все элементы одного размера', 'Разные размеры и контраст', 'Случайное расположение', 'Один цвет для всего'],
+        correct: 1
+      },
+      {
+        id: 'medium4',
+        title: 'Единство дизайна',
+        question: 'Какой принцип помогает создать единство в дизайне?',
+        options: ['Контраст', 'Повторение', 'Близость', 'Случайность'],
+        correct: 1
+      }
+    ]
+  },
+  hard: {
+    name: 'Продвинутый',
+    color: 'hard',
+    title: '«Нарушь осознанно»',
+    description: 'Создай афишу, в которой одно правило CRAP намеренно нарушено ради художественного эффекта.',
+    features: [
+      'Максимальная свобода',
+      'Требуется рефлексия решения',
+      'Минимализм как вызов',
+      'Ограничение: не более 5 элементов на формате А4',
+      'Обоснуй своё решение в дневнике дизайнера'
+    ],
+    example: 'Например, афиша панк-концерта с нарушением выравнивания',
+    tasks: [
+      {
+        id: 'hard1',
+        title: 'Комплексный анализ',
+        question: 'Дизайн имеет хороший контраст и выравнивание, но элементы разбросаны по странице. Какой принцип нужно улучшить?',
+        options: ['Contrast', 'Repetition', 'Alignment', 'Proximity'],
+        correct: 3
+      },
+      {
+        id: 'hard2',
+        title: 'Баланс принципов',
+        question: 'Как избежать монотонности при сильном повторении?',
+        options: ['Убрать все повторения', 'Добавить контраст', 'Улучшить выравнивание', 'Увеличить близость'],
+        correct: 1
+      },
+      {
+        id: 'hard3',
+        title: 'Приоритизация',
+        question: 'В каком порядке следует применять принципы CRAP при создании дизайна?',
+        options: ['C-R-A-P', 'P-A-R-C', 'Любой порядок зависит от задачи', 'R-C-P-A'],
+        correct: 2
+      },
+      {
+        id: 'hard4',
+        title: 'Критический анализ',
+        question: 'Какой принцип наиболее важен для доступности (accessibility)?',
+        options: ['Contrast', 'Repetition', 'Alignment', 'Proximity'],
+        correct: 0
+      },
+      {
+        id: 'hard5',
+        title: 'Оптимизация',
+        question: 'Пользователь не может найти важную кнопку. Какие принципы нужно применить?',
+        options: ['Только Contrast', 'Contrast + Proximity', 'Только Alignment', 'Только Repetition'],
+        correct: 1
+      }
+    ]
+  }
+};
+
+const PERIODS = ['Все время', 'Неделя', 'Месяц', 'Квартал'];
+
+// === STATE ===
+const state = {
+  currentScreen: 'start',
+  currentSection: 'overview',
+  currentPeriod: 'Все время',
+  selectedDifficulty: null,
+  completedTasks: [],
+  taskAnswers: {},
+  reflection: {
+    learned: '',
+    challenges: '',
+    improvements: '',
+    rating: 0
+  },
+  progress: {
+    totalTasks: 0,
+    completedTasks: 0,
+    correctAnswers: 0,
+    startTime: null,
+    endTime: null
+  },
+  metrics: {
+    contrast: { score: 0, attempts: 0 },
+    repetition: { score: 0, attempts: 0 },
+    alignment: { score: 0, attempts: 0 },
+    proximity: { score: 0, attempts: 0 }
+  },
+  theoryProgress: {
+    contrast: false,
+    repetition: false,
+    alignment: false,
+    proximity: false
+  }
+};
+
+// === RENDER FUNCTIONS ===
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  
+  switch(state.currentScreen) {
+    case 'start':
+      renderStartScreen();
+      break;
+    case 'dashboard':
+      renderDashboard();
+      break;
+    case 'practice':
+      renderPractice();
+      break;
+    case 'reflection':
+      renderReflection();
+      break;
+    case 'complete':
+      renderComplete();
+      break;
+  }
+}
+
+function renderStartScreen() {
+  const app = document.getElementById('app');
+  const screen = document.createElement('div');
+  screen.className = 'screen active';
+  screen.innerHTML = `
+    <div class="container text-center">
+      <h1>🎨 Основы композиции и визуальной иерархии</h1>
+      <p class="mb-md">Интерактивный дашборд для изучения принципов дизайна CRAP</p>
+      
+      <div class="grid grid-4 mb-lg">
+        ${Object.entries(CRAP_PRINCIPLES).map(([key, principle]) => `
+          <div class="card metric-card">
+            <div style="font-size: 2rem; margin-bottom: 0.5rem;">${principle.icon}</div>
+            <div class="metric-label">${key.charAt(0).toUpperCase()}</div>
+            <div class="metric-value">${principle.metrics.importance}%</div>
+            <div>${principle.title}</div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div class="container mb-lg">
+        <h2>Что вас ждет:</h2>
+        <ul style="text-align: left; max-width: 600px; margin: 0 auto;">
+          <li>📚 <strong>Теория:</strong> Изучение 4 принципов CRAP с примерами</li>
+          <li>📊 <strong>Дашборд:</strong> Интерактивные метрики и графики</li>
+          <li>🎯 <strong>Практика:</strong> Задания 3 уровней сложности</li>
+          <li>💭 <strong>Рефлексия:</strong> Анализ результатов</li>
+          <li>📥 <strong>Экспорт:</strong> Сохранение данных в JSON/CSV</li>
+        </ul>
+      </div>
+      
+      <button class="btn btn-primary btn-block" onclick="startLearning()">
+        Начать обучение →
+      </button>
+    </div>
+  `;
+  app.appendChild(screen);
+}
+
+function renderDashboard() {
+  const app = document.getElementById('app');
+  
+  // Navigation
+  const nav = document.createElement('nav');
+  nav.className = 'nav';
+  nav.setAttribute('role', 'navigation');
+  nav.innerHTML = `
+    <button class="nav-btn ${state.currentSection === 'overview' ? 'active' : ''}" 
+            onclick="switchSection('overview')" aria-label="Обзор">
+      📊 Обзор
+    </button>
+    <button class="nav-btn ${state.currentSection === 'theory' ? 'active' : ''}" 
+            onclick="switchSection('theory')" aria-label="Теория">
+      📚 Теория
+    </button>
+    <button class="nav-btn ${state.currentSection === 'contrast' ? 'active' : ''}" 
+            onclick="switchSection('contrast')" aria-label="Контраст">
+      🎨 Контраст
+    </button>
+    <button class="nav-btn ${state.currentSection === 'repetition' ? 'active' : ''}" 
+            onclick="switchSection('repetition')" aria-label="Повторение">
+      🔁 Повторение
+    </button>
+    <button class="nav-btn ${state.currentSection === 'alignment' ? 'active' : ''}" 
+            onclick="switchSection('alignment')" aria-label="Выравнивание">
+      📐 Выравнивание
+    </button>
+    <button class="nav-btn ${state.currentSection === 'proximity' ? 'active' : ''}" 
+            onclick="switchSection('proximity')" aria-label="Близость">
+      🧲 Близость
+    </button>
+    <button class="nav-btn ${state.currentSection === 'practice' ? 'active' : ''}" 
+            onclick="switchSection('practice')" aria-label="Практика">
+      🎯 Практика
+    </button>
+    <button class="nav-btn ${state.currentSection === 'export' ? 'active' : ''}" 
+            onclick="switchSection('export')" aria-label="Экспорт">
+      📥 Экспорт
+    </button>
+  `;
+  app.appendChild(nav);
+  
+  // Main content
+  const main = document.createElement('main');
+  main.setAttribute('role', 'main');
+  
+  switch(state.currentSection) {
+    case 'overview':
+      renderOverview(main);
+      break;
+    case 'theory':
+      renderTheoryOverview(main);
+      break;
+    case 'contrast':
+    case 'repetition':
+    case 'alignment':
+    case 'proximity':
+      renderPrincipleDetail(main, state.currentSection);
+      break;
+    case 'practice':
+      renderPracticeSection(main);
+      break;
+    case 'export':
+      renderExportSection(main);
+      break;
+  }
+  
+  app.appendChild(main);
+}
+
+function renderOverview(container) {
+  // Key metrics
+  const metrics = document.createElement('div');
+  metrics.className = 'container';
+  metrics.innerHTML = `
+    <h2>Ключевые метрики</h2>
+    <div class="filter-group">
+      ${PERIODS.map(period => `
+        <button class="filter-btn ${state.currentPeriod === period ? 'active' : ''}" 
+                onclick="changePeriod('${period}')">
+          ${period}
+        </button>
+      `).join('')}
+    </div>
+    <div class="grid grid-4">
+      <div class="card metric-card">
+        <div class="metric-label">Прогресс</div>
+        <div class="metric-value">${Math.round((state.progress.completedTasks / Math.max(state.progress.totalTasks, 1)) * 100)}%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${(state.progress.completedTasks / Math.max(state.progress.totalTasks, 1)) * 100}%"></div>
+        </div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-label">Выполнено заданий</div>
+        <div class="metric-value">${state.progress.completedTasks}</div>
+        <div>из ${state.progress.totalTasks}</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-label">Правильных ответов</div>
+        <div class="metric-value">${state.progress.correctAnswers}</div>
+        <div>точность: ${state.progress.completedTasks > 0 ? Math.round((state.progress.correctAnswers / state.progress.completedTasks) * 100) : 0}%</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-label">Принципов изучено</div>
+        <div class="metric-value">${Object.values(state.theoryProgress).filter(v => v).length}/4</div>
+        <div>принципов CRAP</div>
+      </div>
+    </div>
+  `;
+  container.appendChild(metrics);
+  
+  // Charts
+  const charts = document.createElement('div');
+  charts.className = 'container';
+  charts.innerHTML = `
+    <h2>Визуализация прогресса</h2>
+    <div class="grid grid-2">
+      <div>
+        <h3>Эффективность по принципам</h3>
+        <div class="chart-container">
+          <div class="bar-chart">
+            ${Object.entries(CRAP_PRINCIPLES).map(([key, principle]) => {
+              const height = (state.metrics[key].score / Math.max(state.metrics[key].attempts, 1)) || 0;
+              return `
+                <div class="bar" style="height: ${Math.max(height, 5)}%" title="${principle.title}">
+                  <div class="bar-value">${Math.round(height)}%</div>
+                  <div class="bar-label">${key.charAt(0).toUpperCase()}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Важность принципов</h3>
+        <div class="chart-container">
+          <div class="bar-chart">
+            ${Object.entries(CRAP_PRINCIPLES).map(([key, principle]) => `
+              <div class="bar" style="height: ${principle.metrics.importance}%" title="${principle.title}">
+                <div class="bar-value">${principle.metrics.importance}%</div>
+                <div class="bar-label">${key.charAt(0).toUpperCase()}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(charts);
+  
+  // Recent activity
+  const activity = document.createElement('div');
+  activity.className = 'container';
+  activity.innerHTML = `
+    <h2>Последняя активность</h2>
+    ${state.completedTasks.length === 0 ? `
+      <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <p>Пока нет выполненых заданий</p>
+        <button class="btn btn-primary mt-md" onclick="switchSection('practice')">
+          Начать практику
+        </button>
+      </div>
+    ` : `
+      <div class="grid grid-2">
+        ${state.completedTasks.slice(-6).reverse().map(taskId => {
+          const task = findTaskById(taskId);
+          return `
+            <div class="card">
+              <div class="task-header">
+                <strong>${task.title}</strong>
+                <span class="badge badge-${getDifficultyByTaskId(taskId)}">
+                  ${getDifficultyByTaskId(taskId)}
+                </span>
+              </div>
+              <p>${task.question}</p>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `}
+  `;
+  container.appendChild(activity);
+}
+
+function renderTheoryOverview(container) {
+  const theory = document.createElement('div');
+  theory.className = 'container';
+  theory.innerHTML = `
+    <h2>📚 Теория: Принципы CRAP</h2>
+    <p class="mb-md">Основные принципы дизайна, которые помогут создать эффективную композицию и визуальную иерархию</p>
+    
+    <div class="theory-block">
+      <h4>Что такое CRAP?</h4>
+      <p>CRAP — это четыре основных принципа дизайна, которые помогают создать профессиональную и эффективную композицию:</p>
+      <ul>
+        <li><strong>C</strong>ontrast (Контраст)</li>
+        <li><strong>R</strong>epetition (Повторение)</li>
+        <li><strong>A</strong>lignment (Выравнивание)</li>
+        <li><strong>P</strong>roximity (Близость)</li>
+      </ul>
+    </div>
+    
+    <div class="grid grid-2">
+      ${Object.entries(CRAP_PRINCIPLES).map(([key, principle]) => `
+        <div class="card">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">${principle.icon}</div>
+          <h3>${principle.title}</h3>
+          <p class="mb-sm">${principle.description}</p>
+          <div class="task-status mb-sm">
+            <span class="status-indicator ${state.theoryProgress[key] ? 'completed' : ''}"></span>
+            ${state.theoryProgress[key] ? 'Изучено' : 'Не изучено'}
+          </div>
+          <button class="btn btn-primary btn-block" onclick="switchSection('${key}')">
+            Изучить подробнее →
+          </button>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div class="tip mt-md">
+      Изучите каждый принцип отдельно, чтобы понять его применение на практике. После изучения теории перейдите к практическим заданиям.
+    </div>
+  `;
+  container.appendChild(theory);
+}
+
+function renderPrincipleDetail(container, principle) {
+  const data = CRAP_PRINCIPLES[principle];
+  const metrics = state.metrics[principle];
+  
+  const detail = document.createElement('div');
+  detail.className = 'container';
+  detail.innerHTML = `
+    <div style="font-size: 3rem; margin-bottom: 1rem;">${data.icon}</div>
+    <h2>${data.title}</h2>
+    <p class="mb-md">${data.detailedDescription}</p>
+    
+    <div class="theory-block">
+      <h4>📌 Ключевые моменты</h4>
+      <ul>
+        ${data.keyPoints.map(point => `<li>${point}</li>`).join('')}
+      </ul>
+    </div>
+    
+    <div class="grid grid-3 mb-lg">
+      <div class="card metric-card">
+        <div class="metric-label">Важность</div>
+        <div class="metric-value">${data.metrics.importance}%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${data.metrics.importance}%"></div>
+        </div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-label">Использование</div>
+        <div class="metric-value">${data.metrics.usage}%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${data.metrics.usage}%"></div>
+        </div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-label">Эффективность</div>
+        <div class="metric-value">${data.metrics.effectiveness}%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: ${data.metrics.effectiveness}%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container mb-lg">
+      <h3>💡 Примеры применения</h3>
+      <div class="grid grid-2">
+        ${data.examples.map(example => `
+          <div class="principle-example">${example}</div>
+        `).join('')}
+      </div>
+    </div>
+    
+    <div class="container mb-lg">
+      <h3>🎯 Советы и рекомендации</h3>
+      <div class="accordion">
+        ${data.tips.map((tip, index) => `
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Совет ${index + 1}</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-content">
+              <p>${tip}</p>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    
+    <div class="container">
+      <h3>📊 Ваш прогресс</h3>
+      <div class="grid grid-2">
+        <div>
+          <p><strong>Попыток:</strong> ${metrics.attempts}</p>
+          <p><strong>Средний балл:</strong> ${metrics.attempts > 0 ? Math.round(metrics.score / metrics.attempts) : 0}%</p>
+        </div>
+        <div>
+          ${!state.theoryProgress[principle] ? `
+            <button class="btn btn-success btn-block" onclick="markTheoryComplete('${principle}')">
+              ✓ Отметить как изученное
+            </button>
+          ` : `
+            <div class="tip">Принцип отмечен как изученный!</div>
+          `}
+          <button class="btn btn-primary btn-block mt-sm" onclick="startPrinciplePractice('${principle}')">
+            Практиковать ${data.title.split(' ')[0]}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(detail);
+}
+
+function renderPracticeSection(container) {
+  const practice = document.createElement('div');
+  practice.className = 'container';
+  
+  if (!state.selectedDifficulty) {
+    // Difficulty selection with detailed descriptions
+    practice.innerHTML = `
+      <h2>Выберите уровень сложности</h2>
+      <p class="mb-md">Каждый уровень предлагает практические задания на применение принципов CRAP</p>
+      
+      <div class="grid grid-3">
+        ${Object.entries(PRACTICAL_TASKS).map(([key, level]) => `
+          <div class="card">
+            <span class="badge badge-${level.color} mb-sm">${level.name}</span>
+            <h3>${level.title}</h3>
+            <p class="mb-sm">${level.description}</p>
+            
+            <div class="theory-block">
+              <h4>Особенности:</h4>
+              <ul>
+                ${level.features.map(feature => `<li>${feature}</li>`).join('')}
+              </ul>
+            </div>
+            
+            ${level.hint ? `<div class="tip">💡 ${level.hint}</div>` : ''}
+            ${level.example ? `<div class="principle-example">Пример: ${level.example}</div>` : ''}
+            
+            <p class="mb-sm"><strong>Заданий:</strong> ${level.tasks.length}</p>
+            <button class="btn btn-primary btn-block" onclick="selectDifficulty('${key}')">
+              Выбрать уровень
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    // Tasks
+    const level = PRACTICAL_TASKS[state.selectedDifficulty];
+    practice.innerHTML = `
+      <div class="task-header">
+        <div>
+          <span class="badge badge-${level.color}">${level.name}</span>
+          <h2 class="mt-sm">Уровень: ${level.title}</h2>
+        </div>
+        <button class="btn btn-secondary" onclick="resetDifficulty()">
+          Сменить уровень
+        </button>
+      </div>
+      <p class="mb-md">${level.description}</p>
+      
+      ${level.tasks.map((task, index) => {
+        const isCompleted = state.completedTasks.includes(task.id);
+        const userAnswer = state.taskAnswers[task.id];
+        
+        return `
+          <div class="task-card ${isCompleted ? 'completed' : ''}">
+            <div class="task-header">
+              <h3>${index + 1}. ${task.title}</h3>
+              <div class="task-status">
+                <span class="status-indicator ${isCompleted ? 'completed' : ''}"></span>
+                ${isCompleted ? '✓ Выполнено' : 'Не выполнено'}
+              </div>
+            </div>
+            <p class="mb-sm"><strong>${task.question}</strong></p>
+            
+            ${isCompleted ? `
+              <div class="reflection-item">
+                <p><strong>Ваш ответ:</strong> ${task.options[userAnswer]}</p>
+                <p><strong>Правильный ответ:</strong> ${task.options[task.correct]}</p>
+                ${userAnswer === task.correct ? 
+                  '<p style="color: var(--success);">✓ Правильно!</p>' : 
+                  '<p style="color: var(--danger);">✗ Неправильно</p>'
+                }
+              </div>
+            ` : `
+              <div class="grid grid-2">
+                ${task.options.map((option, optIndex) => `
+                  <button class="btn btn-secondary" onclick="answerTask('${task.id}', ${optIndex})">
+                    ${option}
+                  </button>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        `;
+      }).join('')}
+      
+      ${state.completedTasks.filter(id => level.tasks.some(t => t.id === id)).length === level.tasks.length ? `
+        <div class="container text-center mt-lg">
+          <h3>🎉 Все задания уровня "${level.name}" выполнены!</h3>
+          <button class="btn btn-primary mt-md" onclick="goToReflection()">
+            Перейти к рефлексии →
+          </button>
+        </div>
+      ` : ''}
+    `;
+  }
+  
+  container.appendChild(practice);
+}
+
+function renderExportSection(container) {
+  const exportSection = document.createElement('div');
+  exportSection.className = 'container';
+  exportSection.innerHTML = `
+    <h2>Экспорт данных</h2>
+    <p class="mb-md">Сохраните ваши результаты и прогресс в удобном формате</p>
+    
+    <div class="export-section">
+      <button class="btn btn-primary" onclick="exportJSON()">
+        📥 Экспорт в JSON
+      </button>
+      <button class="btn btn-primary" onclick="exportCSV()">
+        📥 Экспорт в CSV
+      </button>
+      <button class="btn btn-secondary" onclick="resetProgress()">
+        🗑️ Сбросить прогресс
+      </button>
+    </div>
+    
+    <div class="container mt-lg">
+      <h3>Предпросмотр данных</h3>
+      <pre style="background: var(--bg-secondary); padding: var(--spacing-sm); border-radius: var(--radius); overflow-x: auto; font-size: 0.875rem;">
+${JSON.stringify({
+  progress: state.progress,
+  metrics: state.metrics,
+  theoryProgress: state.theoryProgress,
+  completedTasks: state.completedTasks,
+  reflection: state.reflection
+}, null, 2)}
+      </pre>
+    </div>
+  `;
+  container.appendChild(exportSection);
+}
+
+function renderPractice() {
+  const app = document.getElementById('app');
+  const main = document.createElement('main');
+  main.setAttribute('role', 'main');
+  renderPracticeSection(main);
+  app.appendChild(main);
+}
+
+function renderReflection() {
+  const app = document.getElementById('app');
+  const screen = document.createElement('div');
+  screen.className = 'screen active';
+  screen.innerHTML = `
+    <div class="container">
+      <h2>💭 Рефлексия</h2>
+      <p class="mb-md">Поделитесь своими впечатлениями и выводами</p>
+      
+      <form id="reflectionForm" onsubmit="submitReflection(event)">
+        <div class="form-group">
+          <label for="learned">Что нового вы узнали о принципах CRAP?</label>
+          <textarea id="learned" required minlength="10" 
+                    placeholder="Расскажите о ключевых insights..."></textarea>
+          <div class="error-message hidden" id="learnedError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="challenges">Какие задания были наиболее сложными?</label>
+          <textarea id="challenges" required minlength="10"
+                    placeholder="Опишите трудности и как вы их преодолели..."></textarea>
+          <div class="error-message hidden" id="challengesError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="improvements">Как вы планируете применять эти принципы?</label>
+          <textarea id="improvements" required minlength="10"
+                    placeholder="Ваши планы по применению знаний..."></textarea>
+          <div class="error-message hidden" id="improvementsError"></div>
+        </div>
+        
+        <div class="form-group">
+          <label>Оцените полезность курса (1-5)</label>
+          <div class="grid grid-5" style="grid-template-columns: repeat(5, 1fr);">
+            ${[1,2,3,4,5].map(rating => `
+              <button type="button" class="btn ${state.reflection.rating === rating ? 'btn-primary' : 'btn-secondary'}" 
+                      onclick="setRating(${rating})">
+                ${rating}
+              </button>
+            `).join('')}
+          </div>
+          <div class="error-message hidden" id="ratingError"></div>
+        </div>
+        
+        <div class="grid grid-2 mt-lg">
+          <button type="button" class="btn btn-secondary" onclick="backToDashboard()">
+            ← Назад
+          </button>
+          <button type="submit" class="btn btn-success">
+            Завершить курс ✓
+          </button>
+        </div>
+      </form>
+    </div>
+  `;
+  app.appendChild(screen);
+}
+
+function renderComplete() {
+  const app = document.getElementById('app');
+  const screen = document.createElement('div');
+  screen.className = 'screen active';
+  
+  const accuracy = state.progress.completedTasks > 0 
+    ? Math.round((state.progress.correctAnswers / state.progress.completedTasks) * 100) 
+    : 0;
+  
+  screen.innerHTML = `
+    <div class="container text-center">
+      <h1>🎉 Поздравляем!</h1>
+      <h2>Вы завершили курс по принципам CRAP</h2>
+      
+      <div class="grid grid-4 mb-lg mt-lg">
+        <div class="card metric-card">
+          <div class="metric-label">Выполнено заданий</div>
+          <div class="metric-value">${state.progress.completedTasks}</div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-label">Точность</div>
+          <div class="metric-value">${accuracy}%</div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-label">Оценка курса</div>
+          <div class="metric-value">${state.reflection.rating}/5</div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-label">Принципов изучено</div>
+          <div class="metric-value">${Object.values(state.theoryProgress).filter(v => v).length}/4</div>
+        </div>
+      </div>
+      
+      <div class="container mb-lg">
+        <h3>Ваши ответы на рефлексию:</h3>
+        <div class="reflection-item">
+          <strong>Что нового вы узнали:</strong>
+          <p>${state.reflection.learned}</p>
+        </div>
+        <div class="reflection-item">
+          <strong>Сложности:</strong>
+          <p>${state.reflection.challenges}</p>
+        </div>
+        <div class="reflection-item">
+          <strong>Планы по применению:</strong>
+          <p>${state.reflection.improvements}</p>
+        </div>
+      </div>
+      
+      <div class="export-section">
+        <button class="btn btn-primary" onclick="exportJSON()">
+          📥 Скачать результаты (JSON)
+        </button>
+        <button class="btn btn-secondary" onclick="restartCourse()">
+          🔄 Пройти курс заново
+        </button>
+      </div>
+    </div>
+  `;
+  app.appendChild(screen);
+}
+
+// === HANDLERS ===
+function startLearning() {
+  state.currentScreen = 'dashboard';
+  state.progress.startTime = Date.now();
+  saveProgress();
+  render();
+}
+
+function switchSection(section) {
+  state.currentSection = section;
+  render();
+}
+
+function changePeriod(period) {
+  state.currentPeriod = period;
+  render();
+}
+
+function selectDifficulty(difficulty) {
+  state.selectedDifficulty = difficulty;
+  const level = PRACTICAL_TASKS[difficulty];
+  state.progress.totalTasks = level.tasks.length;
+  render();
+}
+
+function resetDifficulty() {
+  state.selectedDifficulty = null;
+  render();
+}
+
+function answerTask(taskId, answerIndex) {
+  const task = findTaskById(taskId);
+  const isCorrect = answerIndex === task.correct;
+  
+  state.taskAnswers[taskId] = answerIndex;
+  state.completedTasks.push(taskId);
+  state.progress.completedTasks++;
+  
+  if (isCorrect) {
+    state.progress.correctAnswers++;
+  }
+  
+  // Update metrics for principle
+  const principle = getPrincipleByTaskId(taskId);
+  if (principle) {
+    state.metrics[principle].attempts++;
+    if (isCorrect) {
+      state.metrics[principle].score += 100;
+    }
+  }
+  
+  saveProgress();
+  render();
+}
+
+function startPrinciplePractice(principle) {
+  state.currentSection = 'practice';
+  state.selectedDifficulty = 'easy';
+  state.progress.totalTasks = PRACTICAL_TASKS.easy.tasks.length;
+  render();
+}
+
+function markTheoryComplete(principle) {
+  state.theoryProgress[principle] = true;
+  saveProgress();
+  render();
+}
+
+function goToReflection() {
+  state.currentScreen = 'reflection';
+  state.progress.endTime = Date.now();
+  saveProgress();
+  render();
+}
+
+function setRating(rating) {
+  state.reflection.rating = rating;
+  render();
+}
+
+function submitReflection(event) {
+  event.preventDefault();
+  
+  const learned = document.getElementById('learned').value.trim();
+  const challenges = document.getElementById('challenges').value.trim();
+  const improvements = document.getElementById('improvements').value.trim();
+  
+  // Validation
+  let isValid = true;
+  
+  if (learned.length < 10) {
+    showError('learnedError', 'Минимум 10 символов');
+    isValid = false;
+  } else {
+    hideError('learnedError');
+  }
+  
+  if (challenges.length < 10) {
+    showError('challengesError', 'Минимум 10 символов');
+    isValid = false;
+  } else {
+    hideError('challengesError');
+  }
+  
+  if (improvements.length < 10) {
+    showError('improvementsError', 'Минимум 10 символов');
+    isValid = false;
+  } else {
+    hideError('improvementsError');
+  }
+  
+  if (state.reflection.rating === 0) {
+    showError('ratingError', 'Пожалуйста, выберите оценку');
+    isValid = false;
+  } else {
+    hideError('ratingError');
+  }
+  
+  if (!isValid) return;
+  
+  state.reflection.learned = learned;
+  state.reflection.challenges = challenges;
+  state.reflection.improvements = improvements;
+  
+  saveProgress();
+  state.currentScreen = 'complete';
+  render();
+}
+
+function backToDashboard() {
+  state.currentScreen = 'dashboard';
+  render();
+}
+
+function restartCourse() {
+  if (confirm('Вы уверены? Весь прогресс будет сброшен.')) {
+    localStorage.removeItem('crapDashboardProgress');
+    location.reload();
+  }
+}
+
+function resetProgress() {
+  if (confirm('Вы уверены? Весь прогресс будет удален.')) {
+    localStorage.removeItem('crapDashboardProgress');
+    location.reload();
+  }
+}
+
+function toggleAccordion(element) {
+  const content = element.nextElementSibling;
+  const isActive = content.classList.contains('active');
+  
+  // Close all
+  document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+  
+  // Open clicked if it was closed
+  if (!isActive) {
+    content.classList.add('active');
+    element.classList.add('active');
+  }
+}
+
+function showError(elementId, message) {
+  const element = document.getElementById(elementId);
+  element.textContent = message;
+  element.classList.remove('hidden');
+}
+
+function hideError(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.add('hidden');
+}
+
+// === EXPORT FUNCTIONS ===
+function exportJSON() {
+  const data = {
+    progress: state.progress,
+    metrics: state.metrics,
+    theoryProgress: state.theoryProgress,
+    completedTasks: state.completedTasks,
+    taskAnswers: state.taskAnswers,
+    reflection: state.reflection,
+    exportDate: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `crap-dashboard-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportCSV() {
+  const rows = [
+    ['Task ID', 'Task Title', 'User Answer', 'Correct Answer', 'Is Correct'],
+    ...state.completedTasks.map(taskId => {
+      const task = findTaskById(taskId);
+      const userAnswer = state.taskAnswers[taskId];
+      return [
+        taskId,
+        task.title,
+        task.options[userAnswer],
+        task.options[task.correct],
+        userAnswer === task.correct ? 'Yes' : 'No'
+      ];
+    })
+  ];
+  
+  const csv = rows.map(row => row.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `crap-dashboard-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// === HELPER FUNCTIONS ===
+function findTaskById(taskId) {
+  for (const level of Object.values(PRACTICAL_TASKS)) {
+    const task = level.tasks.find(t => t.id === taskId);
+    if (task) return task;
+  }
+  return null;
+}
+
+function getDifficultyByTaskId(taskId) {
+  for (const [difficulty, level] of Object.entries(PRACTICAL_TASKS)) {
+    if (level.tasks.some(t => t.id === taskId)) {
+      return difficulty;
+    }
+  }
+  return 'easy';
+}
+
+function getPrincipleByTaskId(taskId) {
+  const task = findTaskById(taskId);
+  if (!task) return null;
+  
+  if (task.title.toLowerCase().includes('контраст') || task.title.toLowerCase().includes('contrast')) {
+    return 'contrast';
+  }
+  if (task.title.toLowerCase().includes('повтор') || task.title.toLowerCase().includes('repeat') || task.title.toLowerCase().includes('единство')) {
+    return 'repetition';
+  }
+  if (task.title.toLowerCase().includes('выравнив') || task.title.toLowerCase().includes('align')) {
+    return 'alignment';
+  }
+  if (task.title.toLowerCase().includes('близост') || task.title.toLowerCase().includes('proximity')) {
+    return 'proximity';
+  }
+  
+  return 'contrast';
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem('crapDashboardProgress', JSON.stringify(state));
+  } catch (e) {
+    console.warn('Failed to save progress:', e);
+  }
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem('crapDashboardProgress');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(state, parsed);
+    }
+  } catch (e) {
+    console.warn('Failed to load progress:', e);
+  }
+}
+
+// === INITIALIZATION ===
+function init() {
+  loadProgress();
+  
+  if (state.progress.startTime) {
+    if (state.currentScreen === 'start') {
+      state.currentScreen = 'dashboard';
+    }
+  }
+  
+  render();
+}
+
+// Start the app
+init();
+</script>
+</body>
+</html>
